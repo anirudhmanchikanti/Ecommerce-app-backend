@@ -17,6 +17,10 @@ var CustomerSchema =new Schema({
               type:Number,
               min:[10, 'minimum numbers 10'],
               required:[true,'mobile number required']
+          },
+          isEmailVerified:{
+              type:Boolean,
+              default:false
           }
     });
 

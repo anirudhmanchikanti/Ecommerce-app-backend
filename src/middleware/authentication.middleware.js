@@ -12,7 +12,7 @@ exports.verifyToken =(req,res,next) =>{
        console.log("inside");
     return res.status(401).send('unauthorized request');
 }
-   jwt.verify(token,'seckey', (error, payload)=> {
+   jwt.verify(token,'seckey', function(error, payload) {
        console.log('payload',payload);
           if(error){
               console.log("message",error.message);
@@ -25,3 +25,4 @@ exports.verifyToken =(req,res,next) =>{
           }
    });
 }
+

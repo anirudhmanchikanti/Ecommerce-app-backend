@@ -5,6 +5,7 @@ var mongoose= require('mongoose');
 var app=express();
 
 var CustomerRouter=require('./routes/customer.route');
+var AdminRouter= require('./routes/admin.route');
 var Config= require('./config');
 
 
@@ -21,11 +22,11 @@ mongoose.connect(Config.AppConfig.MONGO_URI,{ useNewUrlParser: true,useUnifiedTo
 app.use(express.json());
 
 app.use('/customer',CustomerRouter);
+app.use('/admin',AdminRouter);
 
 app.get('/healthcheck', (req,res) => {
 res.send({'message':' app running successfully!'});
 })
-
 
 app.listen(Config.AppConfig.PORT,() => {
 

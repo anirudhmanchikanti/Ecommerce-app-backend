@@ -49,7 +49,6 @@ exports.register= (req,res) => {
       })
 }
 
-
 exports.verifyEmail=(req,res) => {
 
   var emailId=req.body.emailId;

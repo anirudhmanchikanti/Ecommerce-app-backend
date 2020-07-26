@@ -2,6 +2,7 @@ var jwt= require('jsonwebtoken');
 
 var CustomerModel=require('../models/customer.model');
 var EmailService= require('../services/email.service');
+var ProductModel= require('../models/product.model');
 
 exports.register= (req,res) => {
 
@@ -169,4 +170,85 @@ exports.changePassword= (req,res) => {
        }
     })
     
+}
+
+
+exports.listProducts=(req,res) =>{
+
+  console.log('list products');
+
+  ProductModel.find({},(err,docs) =>{
+
+     if(err){
+       console.log(err.message);
+       res.send({ 'message':err.message })
+     }
+     else
+     {
+       res.send(docs);
+     }
+  })
+}
+
+exports.getProductById=(req,res) => {
+       var productId=req.params.productId;
+  ProductModel.findOne({productId:productId}, (err, document) => {
+
+    if(err){
+      console.log(err.message);
+      res.send({ 'message':err.message })
+    }
+    else
+    if(document)
+    {
+      res.send(document);
+    }
+    else
+    {
+      res.send('Product not found');
+    }
+
+  })
+}
+
+exports.lowtoHigh=(req,res) => {
+
+  ProductModel.find({}).sort({'price':1}).exec((err, docs) => {
+    if(err){
+      console.log(err);
+      res.send(err.message);
+    }
+    else
+    {
+       if(docs){
+         res.send(docs);
+       }
+       else
+       {
+         res.send('no products');
+       }
+    }
+  })
+
+}
+
+exports.hightoLow=(req,res) =>{
+
+  ProductModel.find({}).sort({'price':-1}).exec((err, docs) => {
+    if(err){
+      console.log(err);
+      res.send(err.message);
+    }
+    else
+    {
+       if(docs){
+         res.send(docs);
+       }
+       else
+       {
+         res.send('no products');
+       }
+    }
+  })
+
 }

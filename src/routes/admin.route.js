@@ -13,6 +13,4 @@ router.put('/updateProduct/:productId',Authentication.verifyToken,AdminControlle
 router.delete('/deleteProduct/:productId',Authentication.verifyToken,AdminController.deleteProduct)
 router.get('/listProducts',Authentication.verifyToken,AdminController.listProducts);
 
-
-
 module.exports=router;

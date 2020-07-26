@@ -15,7 +15,27 @@ router.post('/login', CustomerController.login);
 
 router.post('/changePassword',Authentication.verifyToken,CustomerController.changePassword);
 
+router.get('/listProducts',CustomerController.listProducts);
+
+router.get('/getProduct/:productId',CustomerController.getProductById)
+
+router.get('/listProducts/lowtohigh',CustomerController.lowtoHigh);
+
+router.get('/listProducts/hightoLow',CustomerController.hightoLow);
+
 module.exports=router;
+
+/*
+
+
+ * List the products based on the category
+
+ * List the products based on the seller
+
+ * price range
+
+
+*/
 
 
 

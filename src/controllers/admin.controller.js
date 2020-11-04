@@ -2,6 +2,8 @@ var jwt= require('jsonwebtoken');
 var AdminModel= require('../models/admin.model');
 var EmailService= require('../services/email.service');
 var ProductModel= require('../models/product.model');
+const productModel = require('../models/product.model');
+const adminModel = require('../models/admin.model');
 
 exports.register= (req,res) => {
 
@@ -43,6 +45,55 @@ exports.register= (req,res) => {
           res.status(200).send({token:token});
       }
     })
+}
+
+exports.changeProfile= (req,res) => {
+  var _id=req.payload.subject;
+  console.log("_id:",_id);
+  
+  var e_emailId=req.body.e_emailId;
+  var n_emailId=req.body.n_emailId;
+
+      if(e_emailId === n_emailId){
+        res.send({'message':'existing profile and new profile cannot be same'});
+        return;
+      }
+
+  adminModel.findOne({_id:_id},(err, doc) => {
+    console.log("doc:",doc);
+    if(err){
+      console.log('error',err);
+      
+    }
+     if(doc){
+         if(doc.emailId ===  e_emailId) {
+              adminModel.updateOne({_id:_id},{emailId: n_emailId}, (err, raw) =>{
+                
+                 if(err){
+                     console.log(err);
+                 }
+                 else
+                 {
+                   if(raw.nModified == 1){
+                      
+                       res.send({'message':'profile updated'});
+                   }
+                   else
+                   {
+                     console.log('raw',raw);
+                     res.send({'message':'unable to update the profile'});
+                   }
+                 }
+
+              })
+         }
+         else
+         {
+           res.send({'message':'profile does not match'});
+         }
+     }
+  })
+  
 }
 
 exports.addProduct=(req,res) => {
@@ -111,10 +162,44 @@ exports.updateProduct=(req,res) => {
 
 exports.deleteProduct = (req,res) => {
 
+  productId=req.params.productId;
+  console.log("productId:",productId)
+  ProductModel.find({productId:productId},(err, doc) => {
+    if(err){
+      console.log('error',err);
+    }
+    
+    else
+    if(doc){
+      ProductModel.deleteOne({productId:productId},(error,raw)=>{
+        if(error){
+          console.log("cant delete product")
+        }
+        else{
+      res.status(200);
+      res.send({status: 'deleted successfully'});
+    }
+      })
+    }
+  })
+
 }
 
-exports.listProducts= (req,res) =>{
+exports.listProducts=(req,res) =>{
 
+  console.log('list products');
+
+  ProductModel.find({},(err,docs) =>{
+
+     if(err){
+       console.log(err.message);
+       res.send({ 'message':err.message })
+     }
+     else
+     {
+       res.send(docs);
+     }
+  })
 }
 
 

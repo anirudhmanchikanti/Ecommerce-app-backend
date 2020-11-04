@@ -50,6 +50,51 @@ exports.register= (req,res) => {
       })
 }
 
+exports.signup= (req,res) => {
+
+  var customer=req.body;
+
+   var newCustomer=new CustomerModel(customer);
+
+     newCustomer.save((err,doc) => {
+
+       if(err){
+           console.log(err);
+           res.send(err);
+       }
+       else
+       {
+
+             var payload={subject:doc._id};
+              
+             var token=jwt.sign(payload,'seckey');
+
+            var mailOptions={
+               from: 'noreply@ecommerce.com',
+               to: customer.emailId,
+               subject: "Thanks for Registration and Verify Email",
+               html:`
+               
+                     <html>
+
+                       <body>
+                         
+                           <a target='_blank' href="http://localhost:3000/customer/verifyEmail">Verify Email</a>
+
+                       </body>
+
+                     </html>
+               
+               `
+             };
+
+              EmailService.sendEmail(mailOptions);
+              
+            
+           res.status(200).send({token:token});
+       }
+     })
+}
 exports.verifyEmail=(req,res) => {
 
   var emailId=req.body.emailId;

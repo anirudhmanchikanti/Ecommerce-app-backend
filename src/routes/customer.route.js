@@ -7,11 +7,13 @@ var Authentication=require('../middleware/authentication.middleware');
 
 
 router.post('/register',CustomerController.register);
+router.post('/signup',CustomerController.register);
 
 //http://localhost:3000/customer/verifyEmail
 router.post('/verifyEmail', CustomerController.verifyEmail);
 
 router.post('/login', CustomerController.login);
+
 
 router.post('/changePassword',Authentication.verifyToken,CustomerController.changePassword);
 

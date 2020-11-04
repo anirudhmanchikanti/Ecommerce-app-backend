@@ -7,6 +7,7 @@ var app=express();
 var CustomerRouter=require('./routes/customer.route');
 var AdminRouter= require('./routes/admin.route');
 var Config= require('./config');
+var cors = require('cors');
 
 
 mongoose.connect(Config.AppConfig.MONGO_URI,{ useNewUrlParser: true,useUnifiedTopology: true},(err) => {
@@ -20,6 +21,7 @@ mongoose.connect(Config.AppConfig.MONGO_URI,{ useNewUrlParser: true,useUnifiedTo
 })
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/customer',CustomerRouter);
 app.use('/admin',AdminRouter);
